@@ -42,9 +42,9 @@
                         <el-tag v-show="scope.row.level == 1"
                         >管理员</el-tag>
                         <el-tag v-show="scope.row.level == 2" type='info'
-                        >房东</el-tag>
+                        >商家</el-tag>
                         <el-tag v-show="scope.row.level == 3" type='warning'
-                        >租客</el-tag>
+                        >买家</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">

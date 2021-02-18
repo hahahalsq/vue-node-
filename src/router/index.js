@@ -84,19 +84,19 @@ export default new Router({
                     meta: { title: '用户列表' }
                 },
                 {
-                    path: '/houseHold',
-                    component: () => import(/* webpackChunkName: "form" */ '../components/page/houseHold.vue'),
-                    meta: { title: '持有列表' }
+                    path: '/goodsHold',
+                    component: () => import(/* webpackChunkName: "form" */ '../components/page/goodsHold.vue'),
+                    meta: { title: '在售列表' }
                 },
                 {
-                    path: '/houseEdit',
-                    component: () => import(/* webpackChunkName: "form" */ '../components/page/houseEdit.vue'),
-                    meta: { title: '房屋编辑' }
+                    path: '/goodsEdit',
+                    component: () => import(/* webpackChunkName: "form" */ '../components/page/goodsEdit.vue'),
+                    meta: { title: '商品编辑' }
                 },
                 {
                     path: '/marketList',
-                    component: () => import(/* webpackChunkName: "form" */ '../components/page/houseEdit.vue'),
-                    meta: { title: '房屋市场' }
+                    component: () => import(/* webpackChunkName: "form" */ '../components/page/marketList.vue'),
+                    meta: { title: '商品市场' }
                 },
 
             ]

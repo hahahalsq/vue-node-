@@ -183,7 +183,7 @@ export default {
                     title: '用户列表'
                 },
             ]
-        }else if( parseInt(this.level) == 2){         // 房东
+        }else if( parseInt(this.level) == 2){         // 商户
             this.items = [
                 {
                     icon: 'el-icon-lx-home',
@@ -192,13 +192,13 @@ export default {
                 },
                 {
                     icon: 'el-icon-lx-copy',
-                    index: 'houseHold',
+                    index: 'goodsHold',
                     title: '持有列表'
                 },
                 {
                     icon: 'el-icon-lx-copy',
-                    index: 'houseEdit',
-                    title: '房屋编辑'
+                    index: 'goodsEdit',
+                    title: '商品编辑'
                 },                
             ]         
         }else if( parseInt(this.level) == 3){         // 普通用户
@@ -210,8 +210,8 @@ export default {
                 },
                 {
                     icon: 'el-icon-lx-copy',
-                    index: 'houseList',
-                    title: '房屋列表'
+                    index: 'marketList',
+                    title: '商品市场'
                 },
                 {
                     icon: 'el-icon-lx-calendar',

@@ -24,8 +24,8 @@
 
                         <el-form-item label="身份">
                             <el-select v-model="form.level" placeholder="请选择">
-                                <el-option key="fd" label="我要出租" value='2'></el-option>
-                                <el-option key="zk" label="我要租房" value="3"></el-option>
+                                <el-option key="fd" label="我是商家" value='2'></el-option>
+                                <el-option key="zk" label="我是买家" value="3"></el-option>
                             </el-select>
                         </el-form-item>
 <!--                         <el-form-item label="日期时间">

@@ -37,8 +37,8 @@ export default {
     data: function() {
         return {
             param: {
-                username: 'admin',
-                password: 'aaa',
+                username: '',
+                password: '',
             },
             rules: {
                 username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
@@ -56,6 +56,7 @@ export default {
             })
         },
         submitForm() {
+            localStorage.clear()    // 清空所有数据
             const that = this
             var name = this.param.username
             var pwd = this.param.password

@@ -7,7 +7,7 @@ const mysqlConfig = {
     host:'localhost',
     user:'root',               // 数据库用户名
     password:'root',         // 数据库密码
-    database:'test1',
+    database:'test2',
     port:'3306'
 }
 const pool=mysql.createPool({
@@ -65,7 +65,6 @@ app.post('/register',function(req,res){
     password = req.body.pwd;
     level = req.body.level;
     state = 1;
-
     //向前台反馈信息
     pool.getConnection((err,connection) => {
         var sql = 'INSERT INTO user (username,password,state,level) VALUES (?,?,?,?)'
@@ -78,7 +77,6 @@ app.post('/register',function(req,res){
         })
     })
 });
-
 
 
 // 处理请求用户账号信息列表请求
@@ -113,6 +111,60 @@ app.post('/adminChangeState',function(req,res){
         })
     })
 });
+
+
+app.post('/getHoldList',function(req,res){
+    username=req.body.username;
+    pool.getConnection((err,connection) => {
+        var sql = 'SELECT * FROM goodsInfo WHERE username = ? '
+        connection.query(sql,[username],(err,result) =>{
+            res.status(200).send(
+                result
+              ) ;
+            connection.release();
+        })
+    })
+});
+
+// 商户提交商品信息接口
+app.post('/submitgoodsform',function(req,res){
+
+    goodsname = req.body.goodsname;
+    price = req.body.price;
+    amount = req.body.amount;
+    content = req.body.describe;
+    username = req.body.username;
+    state = req.body.state;
+    pool.getConnection((err,connection) => {
+        var sql = 'INSERT INTO goodsInfo (goodsname,price,amount,state,username,content) VALUES (?,?,?,?,?,?)'
+        connection.query(sql,[goodsname,price,amount,state,username,content],(err,result) =>{
+            res.status(200).send(
+                result
+              ) ;
+            connection.release();
+        })
+    })
+});
+
+// 商品操作状态
+app.post('/goodsChangeState',function(req,res){
+    username = req.body.username
+    state = req.body.state
+    goodsname = req.body.goodsname
+    pool.getConnection((err,connection) => {
+        var sql = 'UPDATE user SET state = ? WHERE username = ? AND goodsname = ?'
+        connection.query(sql,[state,username,goodsname],(err,result) =>{
+            console.log(result)
+            res.status(200).send(
+                result
+              ) ;
+            connection.release();
+        })
+    })
+});
+
+
+
 
 // 普通用户提交信息接口
 app.post('/submitform',function(req,res){

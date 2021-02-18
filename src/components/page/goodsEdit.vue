@@ -11,10 +11,16 @@
         <div class="container">
             <div class="form-box">
                 <el-form ref="form" :model="form" label-width="80px">
-                    <el-form-item label="姓名">
+                    <el-form-item label="名称">
                         <el-input v-model="form.name"></el-input>
                     </el-form-item>
-                    <el-form-item label="性别">
+                    <el-form-item label="价格">
+                        <el-input v-model="form.price"></el-input>
+                    </el-form-item>
+                    <el-form-item label="存量">
+                        <el-input v-model="form.number"></el-input>
+                    </el-form-item>
+<!--                     <el-form-item label="价格">
                         <el-radio-group v-model="form.sex">
                             <el-radio label="man">男</el-radio>
                             <el-radio label="woman">女</el-radio>
@@ -46,13 +52,13 @@
                             <el-option key="org3" label="内科" value="org3"></el-option>
                             <el-option key="org4" label="外科" value="org4"></el-option>
                         </el-select>
-                    </el-form-item>
+                    </el-form-item> -->
 <!--                     <el-form-item label="城市级联">
                         <el-cascader :options="options" v-model="form.options"></el-cascader>
                     </el-form-item> -->
-                    <el-form-item label="选择开关">
+<!--                     <el-form-item label="选择开关">
                         <el-switch v-model="form.delivery"></el-switch>
-                    </el-form-item>
+                    </el-form-item> -->
 <!--                     <el-form-item label="多选框">
                         <el-checkbox-group v-model="form.type">
                             <el-checkbox label="步步高" name="type"></el-checkbox>
@@ -79,66 +85,11 @@ export default {
     name: 'baseform',
     data() {
         return {
-            options: [
-                {
-                    value: 'guangdong',
-                    label: '广东省',
-                    children: [
-                        {
-                            value: 'guangzhou',
-                            label: '广州市',
-                            children: [
-                                {
-                                    value: 'tianhe',
-                                    label: '天河区'
-                                },
-                                {
-                                    value: 'haizhu',
-                                    label: '海珠区'
-                                }
-                            ]
-                        },
-                        {
-                            value: 'dongguan',
-                            label: '东莞市',
-                            children: [
-                                {
-                                    value: 'changan',
-                                    label: '长安镇'
-                                },
-                                {
-                                    value: 'humen',
-                                    label: '虎门镇'
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    value: 'hunan',
-                    label: '湖南省',
-                    children: [
-                        {
-                            value: 'changsha',
-                            label: '长沙市',
-                            children: [
-                                {
-                                    value: 'yuelu',
-                                    label: '岳麓区'
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ],
             form: {
                 name: '',
-                sex:'',
-                date1: '',
-                date2: '',
-                org:'',
-                delivery: true,
-                desc: '',
+                price:'',
+                number:'',
+                desc:'',
             }
         };
     },
@@ -147,30 +98,33 @@ export default {
             this.$message.success('提交成功！');
             const that = this
             var name = this.form.name
-            var sex = this.form.sex
-            var date1 = this.form.date1
-            var date2 = this.form.date2
-            var org = this.form.org
-            var delivery = this.form.delivery ? 1 : 0
+            var price = this.form.price
+            var number = (this.form.number)
             var desc = this.form.desc
-            if (name=="" || sex =="" || date1=="" || date2=="" || org=="" || delivery=="" || desc=="") {
+            var username = localStorage.getItem('ms_username')
+            if (name=="" || price =="" || number=="" || desc=="") {
                 this.$message.error('请将数据补充完整！');
             } else {
                 //向服务器提交数据
-                axios.post('http://127.0.0.1:3000/submitform', {
-                        name: name,
-                        sex:sex,
-                        date1:date1,
-                        date2:date2,
-                        org:org,
-                        delivery:delivery,
-                        desc:desc
+                axios.post('http://127.0.0.1:3000/submitgoodsform', {
+                        goodsname: name,
+                        price:price,
+                        amount:number,
+                        describe:desc,
+                        username:username,
+                        state:1,
                     })
                     .then(function(response) {
                         //成功时服务器返回 response 数据
-                        console.log('~~~~~~~~~~~')
-                        console.log(response.data)
-
+                        if(response.status == 200){
+                            that.$router.push({
+                              path:'/goodsHold',
+                            })
+                            that.form.name = ''
+                            that.form.price = ''
+                            that.form.number = ''
+                            that.form.desc = ''
+                        }
                     })
                     .catch(function(error) {
                         console.log(error);

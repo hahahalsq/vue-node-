@@ -27,75 +27,40 @@
                 @selection-change="handleSelectionChange"
             >
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <!-- <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column> -->
-                <el-table-column prop="address" label="地址"></el-table-column>
-<!--                 <el-table-column label="账户余额">
-                    <template slot-scope="scope">￥{{scope.row.money}}</template>
-                </el-table-column>
-                <el-table-column prop="address" label="地址"></el-table-column> -->
-<!--                 <el-table-column label="状态" align="center">
-                    <template slot-scope="scope">
-                        <el-tag v-show="scope.row.state == 1" type='success'
-                        >正常</el-tag>
-                        <el-tag v-show="scope.row.state != 1" type='danger'
-                        >异常</el-tag>
-                    </template>
-                </el-table-column> -->
-
+                <el-table-column prop="goodsname" label="商品名" align="center"></el-table-column>
+                <el-table-column prop="price" label="价格" align="center"></el-table-column>
+                <el-table-column prop="amount" label="存货量" align="center"></el-table-column>
                 <el-table-column label="描述">
                     <template slot-scope="scope">
-                        {{scope.row.describe}}
+                        {{scope.row.content}}
                     </template>
                 </el-table-column>
-                <el-table-column prop="address" label="价格"></el-table-column>
-
-                <el-table-column label="级别" align="center">
+                <el-table-column label="状态" align="center">
                     <template slot-scope="scope">
-                        {{scope.row.level}}
+                        <el-tag v-show="scope.row.state == 1" type='success'
+                        >在售</el-tag>
+                        <el-tag v-show="scope.row.state != 1" type='danger'
+                        >已下架</el-tag>
                     </template>
                 </el-table-column>
+
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button
                             type="text"
                             icon="el-icon-edit"
-                            @click="handleEdit(scope.$index, scope.row)"
-                        >操作</el-button>
-<!--                         <el-button
-                            type="text"
-                            icon="el-icon-delete"
-                            class="red"
-                            @click="handleDelete(scope.$index, scope.row)"
-                        >删除</el-button> -->
-                    </template>
-                </el-table-column>
-                <!-- <el-table-column prop="date" label="注册时间"></el-table-column> -->
-<!--                 <el-table-column label="操作" width="180" align="center">
-                    <template slot-scope="scope">
+                            @click="handleEdit(scope.$index, scope.row)" v-show="scope.row.state != 1" 
+                        >上架</el-button>
                         <el-button
                             type="text"
                             icon="el-icon-edit"
-                            @click="handleEdit(scope.$index, scope.row)"
-                        >编辑</el-button>
-                        <el-button
-                            type="text"
-                            icon="el-icon-delete"
-                            class="red"
-                            @click="handleDelete(scope.$index, scope.row)"
-                        >删除</el-button>
+                            @click="handleEdit(scope.$index, scope.row)" v-show="scope.row.state == 1 "
+                        >下架</el-button>
                     </template>
-                </el-table-column> -->
+                </el-table-column>
+
             </el-table>
-<!--             <div class="pagination">
-                <el-pagination
-                    background
-                    layout="total, prev, pager, next"
-                    :current-page="query.pageIndex"
-                    :page-size="query.pageSize"
-                    :total="pageTotal"
-                    @current-change="handlePageChange"
-                ></el-pagination>
-            </div> -->
+
         </div>
 
         <!-- 编辑弹出框 -->
@@ -136,21 +101,26 @@ export default {
             pageTotal: 0,
             form: {},
             idx: -1,
-            id: -1
+            id: -1,
+            username:'',
+
         };
     },
     created() {
-        this.getData();
+        this.getHoldData();
     },
     methods: {
-        getData() {
+        getHoldData() {
             //向服务器提交数据
             const that = this
-            axios.post('http://127.0.0.1:3000/getUserList', {})
-                .then(function(response) {
+            that.username = localStorage.getItem('ms_username')
+            var name = that.username
+            axios.post('http://127.0.0.1:3000/getHoldList', {
+                username:name
+            }).then(function(response) {
                     //成功时服务器返回 response 数据
                     console.log('~~~~~~~~~~~')
-                    console.log(response.data)
+                    console.log(response)
                     if(response.data.length){
                         that.tableData = response.data
                     }else{
@@ -163,51 +133,50 @@ export default {
                 });
         },
         // 触发搜索按钮
-        handleSearch() {
-            this.$set(this.query, 'pageIndex', 1);
-            this.getData();
-        },
-        // 删除操作
-        handleDelete(index, row) {
-            // 二次确认删除
-            this.$confirm('确定要删除吗？', '提示', {
-                type: 'warning'
-            })
-                .then(() => {
-                    this.$message.success('删除成功');
-                    this.tableData.splice(index, 1);
-                })
-                .catch(() => {});
-        },
-        // 多选操作
-        handleSelectionChange(val) {
-            this.multipleSelection = val;
-        },
-        delAllSelection() {
-            const length = this.multipleSelection.length;
-            let str = '';
-            this.delList = this.delList.concat(this.multipleSelection);
-            for (let i = 0; i < length; i++) {
-                str += this.multipleSelection[i].name + ' ';
-            }
-            this.$message.error(`删除了${str}`);
-            this.multipleSelection = [];
-        },
-        // 编辑操作
+        // handleSearch() {
+        //     this.$set(this.query, 'pageIndex', 1);
+        //     this.getData();
+        // },
+        // // 删除操作
+        // handleDelete(index, row) {
+        //     // 二次确认删除
+        //     this.$confirm('确定要删除吗？', '提示', {
+        //         type: 'warning'
+        //     })
+        //         .then(() => {
+        //             this.$message.success('删除成功');
+        //             this.tableData.splice(index, 1);
+        //         })
+        //         .catch(() => {});
+        // },
+        // // 多选操作
+        // handleSelectionChange(val) {
+        //     this.multipleSelection = val;
+        // },
+        // delAllSelection() {
+        //     const length = this.multipleSelection.length;
+        //     let str = '';
+        //     this.delList = this.delList.concat(this.multipleSelection);
+        //     for (let i = 0; i < length; i++) {
+        //         str += this.multipleSelection[i].name + ' ';
+        //     }
+        //     this.$message.error(`删除了${str}`);
+        //     this.multipleSelection = [];
+        // },
+       // 编辑操作
         handleEdit(index, row) {
-            var user = row.username
+            var goodsname = row.goodsname
             var stateChange = row.state == 1 ? 0 : 1
             const that = this
-            axios.post('http://127.0.0.1:3000/adminChangeState', {
-                username:user,
-                state:stateChange
-            })
-                .then(function(response) {
-                    //成功时服务器返回 response 数据
-                    console.log('~~~~~~~~~~~')
-                    console.log(response.data)
-                    if(response.data.length){
-                        that.tableData = response.data
+            var username = localStorage.getItem('ms_username')
+            axios.post('http://127.0.0.1:3000/goodsChangeState', {
+                goodsname:goodsname,
+                state:stateChange,
+                username:username
+            }).then(function(response) {
+                    if(response.status == 200)
+                    {
+                        that.getHoldData();
                     }else{
                         that.$message.error('没有数据')
                         return false
