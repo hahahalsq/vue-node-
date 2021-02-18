@@ -95,14 +95,13 @@ export default {
     },
     methods: {
         onSubmit() {
-            this.$message.success('提交成功！');
             const that = this
             var name = this.form.name
             var price = this.form.price
             var number = (this.form.number)
             var desc = this.form.desc
             var username = localStorage.getItem('ms_username')
-            if (name=="" || price =="" || number=="" || desc=="") {
+            if (name=="" || price =="" || number=="" ) {
                 this.$message.error('请将数据补充完整！');
             } else {
                 //向服务器提交数据
@@ -117,6 +116,7 @@ export default {
                     .then(function(response) {
                         //成功时服务器返回 response 数据
                         if(response.status == 200){
+                            that.$message.success('提交成功！');
                             that.$router.push({
                               path:'/goodsHold',
                             })

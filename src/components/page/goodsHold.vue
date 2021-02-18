@@ -24,7 +24,7 @@
                 class="table"
                 ref="multipleTable"
                 header-cell-class-name="table-header"
-                @selection-change="handleSelectionChange"
+                @selection-change=""
             >
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="goodsname" label="商品名" align="center"></el-table-column>
@@ -64,7 +64,7 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
+<!--         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :model="form" label-width="70px">
                 <el-form-item label="用户名">
                     <el-input v-model="form.name"></el-input>
@@ -77,7 +77,7 @@
                 <el-button @click="editVisible = false">取 消</el-button>
                 <el-button type="primary" @click="saveEdit">确 定</el-button>
             </span>
-        </el-dialog>
+        </el-dialog> -->
     </div>
 </template>
 
@@ -109,6 +109,35 @@ export default {
     created() {
         this.getHoldData();
     },
+    mounted(){
+        console.log('~~~~~')
+    },
+
+    watch: {
+      // 如果路由发生变化，再次执行该方法
+      "$route": "getHoldData"
+    },
+
+    // beforeRouteEnter(to, from, next) {
+    //     const that = this
+    //     var name = localStorage.getItem('ms_username')
+    //     axios.post('http://127.0.0.1:3000/getHoldList', {
+    //         username:name
+    //     }).then(function(response) {
+    //             //成功时服务器返回 response 数据
+    //             console.log('~~~~~~~~~~~')
+    //             console.log(response)
+    //             if(response.data.length){
+    //                 that.tableData = response.data
+    //             }else{
+    //                 that.$message.error('没有数据')
+    //                 return false
+    //             }
+    //         })
+    //         .catch(function(error) {
+    //             console.log(error);
+    //         });
+    // },
     methods: {
         getHoldData() {
             //向服务器提交数据
@@ -119,8 +148,8 @@ export default {
                 username:name
             }).then(function(response) {
                     //成功时服务器返回 response 数据
-                    console.log('~~~~~~~~~~~')
-                    console.log(response)
+                    // console.log('~~~~~~~~~~~')
+                    // console.log(response)
                     if(response.data.length){
                         that.tableData = response.data
                     }else{
@@ -166,13 +195,13 @@ export default {
        // 编辑操作
         handleEdit(index, row) {
             var goodsname = row.goodsname
+            var id = row.id
             var stateChange = row.state == 1 ? 0 : 1
             const that = this
             var username = localStorage.getItem('ms_username')
             axios.post('http://127.0.0.1:3000/goodsChangeState', {
-                goodsname:goodsname,
                 state:stateChange,
-                username:username
+                id:id,
             }).then(function(response) {
                     if(response.status == 200)
                     {

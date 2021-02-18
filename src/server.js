@@ -148,13 +148,11 @@ app.post('/submitgoodsform',function(req,res){
 
 // 商品操作状态
 app.post('/goodsChangeState',function(req,res){
-    username = req.body.username
     state = req.body.state
-    goodsname = req.body.goodsname
+    id = req.body.id
     pool.getConnection((err,connection) => {
-        var sql = 'UPDATE user SET state = ? WHERE username = ? AND goodsname = ?'
-        connection.query(sql,[state,username,goodsname],(err,result) =>{
-            console.log(result)
+        var sql = 'UPDATE goodsInfo SET state = ? WHERE id = ? '
+        connection.query(sql,[state,id],(err,result) =>{
             res.status(200).send(
                 result
               ) ;
@@ -162,6 +160,48 @@ app.post('/goodsChangeState',function(req,res){
         })
     })
 });
+
+app.post('/getMarketList',function(req,res){
+    pool.getConnection((err,connection) => {
+        var sql = 'SELECT * FROM goodsInfo'
+        connection.query(sql,[],(err,result) =>{
+            res.status(200).send(
+                result
+              ) ;
+            connection.release();
+        })
+    })
+});
+
+app.post('/getCarList',function(req,res){
+    username = req.body.username
+    console.log(username)
+    pool.getConnection((err,connection) => {
+        var sql = 'SELECT * FROM cars WHERE username = ?'
+        connection.query(sql,[username],(err,result) =>{
+            res.status(200).send(
+                result
+              ) ;
+            connection.release();
+        })
+    })
+});
+
+
+app.post('/addCar',function(req,res){
+    id = req.body.id
+    username = req.body.username
+    pool.getConnection((err,connection) => {
+        var sql = 'INSERT INTO cars (username,id) VALUES (?,?) '
+        connection.query(sql,[username,id],(err,result) =>{
+            res.status(200).send(
+                result
+              ) ;
+            connection.release();
+        })
+    })
+});
+
 
 
 

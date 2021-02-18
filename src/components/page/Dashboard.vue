@@ -42,9 +42,9 @@ export default {
             if(parseInt(this.level) === 1){
                 return '超级管理员'
             }else if(parseInt(this.level) === 2){
-                return '医生'
+                return '商家'
             }else{
-                return '普通用户'
+                return '顾客'
             }
         }
     },
