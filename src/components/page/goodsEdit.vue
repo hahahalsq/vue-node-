@@ -14,10 +14,10 @@
                     <el-form-item label="名称">
                         <el-input v-model="form.name"></el-input>
                     </el-form-item>
-                    <el-form-item label="价格">
+                    <el-form-item label="价格(￥)">
                         <el-input v-model="form.price"></el-input>
                     </el-form-item>
-                    <el-form-item label="存量">
+                    <el-form-item label="存量(件)">
                         <el-input v-model="form.number"></el-input>
                     </el-form-item>
 <!--                     <el-form-item label="价格">
@@ -66,7 +66,7 @@
                             <el-checkbox label="imoo" name="type"></el-checkbox>
                         </el-checkbox-group>
                     </el-form-item> -->
-                    <el-form-item label="描述">
+                    <el-form-item label="详情">
                         <el-input type="textarea" rows="5" v-model="form.desc"></el-input>
                     </el-form-item>
                     <el-form-item>

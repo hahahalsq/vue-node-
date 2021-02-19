@@ -164,7 +164,7 @@ app.post('/goodsChangeState',function(req,res){
 app.post('/getMarketList',function(req,res){
     pool.getConnection((err,connection) => {
         var sql = 'SELECT * FROM goodsInfo'
-        connection.query(sql,[],(err,result) =>{
+        connection.query(sql,(err,result) =>{
             res.status(200).send(
                 result
               ) ;

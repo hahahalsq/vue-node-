@@ -26,11 +26,11 @@
                 header-cell-class-name="table-header"
                 @selection-change=""
             >
-                <el-table-column type="selection" width="55" align="center"></el-table-column>
+                <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
                 <el-table-column prop="goodsname" label="商品名" align="center"></el-table-column>
-                <el-table-column prop="price" label="价格" align="center"></el-table-column>
-                <el-table-column prop="amount" label="存货量" align="center"></el-table-column>
-                <el-table-column label="描述">
+                <el-table-column prop="price" label="价格(￥)" align="center"></el-table-column>
+                <el-table-column prop="amount" label="存货量(件)" align="center"></el-table-column>
+                <el-table-column label="详情">
                     <template slot-scope="scope">
                         {{scope.row.content}}
                     </template>

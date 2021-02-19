@@ -9,14 +9,14 @@
                         <div>{{role}}</div>
                     </div>
                 </div>
-                <div class="user-info-list">
+<!--                 <div class="user-info-list">
                     上次登录时间：
                     <span>2019-11-01</span>
                 </div>
                 <div class="user-info-list">
                     上次登录地点：
                     <span>东莞</span>
-                </div>
+                </div> -->
             </el-card>
         </div>
     </div>
@@ -44,7 +44,7 @@ export default {
             }else if(parseInt(this.level) === 2){
                 return '商家'
             }else{
-                return '顾客'
+                return '买家'
             }
         }
     },

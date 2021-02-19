@@ -14,8 +14,9 @@
                 class="table"
                 ref="multipleTable"
                 header-cell-class-name="table-header"
-                @selection-change=""
+                @selection-change="handleSelectionChange"
             >
+                <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="goodsname" label="商品名" align="center"></el-table-column>
                 <el-table-column prop="price" label="价格" align="center"></el-table-column>
                 <el-table-column prop="buynum" label="数量" align="center"></el-table-column>
@@ -35,6 +36,12 @@
                 </el-table-column>
 
             </el-table>
+        </div>
+
+
+        <div class="fixBottom">
+            <div class="fontA">您应付</div>
+            <div class="fontB">{{totalMoney}}元</div>
         </div>
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
@@ -57,12 +64,6 @@ export default {
     name: 'basetable',
     data() {
         return {
-            query: {
-                address: '',
-                name: '',
-                pageIndex: 1,
-                pageSize: 10
-            },
             tableData: [],
             tempData:[],
             multipleSelection: [],
@@ -75,6 +76,7 @@ export default {
             username:'',
             tempRow:null,
             num:0,
+            totalMoney:0,
         };
     },
     created() {
@@ -206,6 +208,20 @@ export default {
         handleChange(value) {
             console.log(value);
         },
+        handleSelectionChange(val) {
+            this.multipleSelection = val;
+            this.totalMoney = 0
+            console.log('*******************')
+            console.log(this.multipleSelection)
+            for(var i=0;i<this.multipleSelection.length;i++){
+                var item = this.multipleSelection[i]
+                var price = parseFloat(item.price)
+                var buynum = parseFloat(item.buynum)
+                this.totalMoney = this.totalMoney + price * buynum
+            }
+            console.log('******************')
+            console.log(this.totalMoney)
+        },
     }
 };
 </script>
@@ -238,5 +254,26 @@ export default {
     margin: auto;
     width: 40px;
     height: 40px;
+}
+.fixBottom{
+    position: absolute;
+    bottom:40px;
+    background-color: #ffffff;
+    opacity:0.7;
+    width:100%;
+    left: 0;
+    z-index:2;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+}
+.fontA{
+    color:#666666;
+    font-size:30px;
+}
+.fontB{
+    color:#E56151;
+    font-size:40px;
 }
 </style>
