@@ -9,7 +9,7 @@
         </div>
         <div class="container">
             <el-table
-                :data="tempData"
+                :data="tableData"
                 border
                 class="table"
                 ref="multipleTable"
@@ -18,23 +18,18 @@
             >
                 <el-table-column prop="goodsname" label="商品名" align="center"></el-table-column>
                 <el-table-column prop="price" label="价格" align="center"></el-table-column>
-                <el-table-column label="描述">
-                    <template slot-scope="scope">
-                        {{scope.row.content}}
-                    </template>
-                </el-table-column>
-
+                <el-table-column prop="buynum" label="数量" align="center"></el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button
                             type="text"
                             icon="el-icon-edit"
-                            @click="handleAdd(scope.$index, scope.row)" v-show="scope.row.carFlag != true"
-                        >加入购物车</el-button>
+                            @click="handleAdd(scope.$index, scope.row)"
+                        >修改数量</el-button>
                         <el-button
                             type="text"
                             icon="el-icon-edit"
-                            @click="handleDel(scope.$index, scope.row)" v-show="scope.row.carFlag == true"
+                            @click="handleDel(scope.$index, scope.row)"
                         >移出购物车</el-button>
                     </template>
                 </el-table-column>
@@ -83,7 +78,7 @@ export default {
         };
     },
     created() {
-        this.getListData();
+        this.getCarData();
     },
     mounted(){
         console.log('~~~~~')
@@ -91,22 +86,24 @@ export default {
 
     watch: {
       // 如果路由发生变化，再次执行该方法
-      "$route": "getListData"
+      "$route": "getCarData"
     },
     methods: {
-        getListData() {
+        getCarData() {
             //向服务器提交数据
             const that = this
             that.username = localStorage.getItem('ms_username')
-            var name = that.username
-            axios.post('http://127.0.0.1:3000/getMarketList', {
+            var username = that.username
+            axios.post('http://127.0.0.1:3000/getCarList', {
+                username:username
             }).then(function(response) {
                     //成功时服务器返回 response 数据
                     if(response.data.length){
                         that.tableData = response.data
-                        that.getCarInfo()
+                        // that.getCarInfo()
 
                     }else{
+                        that.tableData = []
                         that.$message.error('没有数据')
                         return false
                     }
@@ -116,34 +113,33 @@ export default {
                 });
         },
 
-        getCarInfo() {
-            var that = this
+        // getCarInfo() {
+        //     var that = this
+        //     // 获取本账户购物车数据信息
+        //     var username = localStorage.getItem('ms_username')
+        //     axios.post('http://127.0.0.1:3000/getCarList', {
+        //         username:username
+        //     }).then(function(response) {
+        //             that.$nextTick(() => {
+        //                 //成功时服务器返回 response 数据
+        //                 if(response.data.length){
+        //                     for(var i=0;i<that.tableData.length;i++){
+        //                         for(var j=0;j<response.data.length;j++){
+        //                             if(that.tableData[i].id == response.data[j].id){
+        //                                 that.tableData[i].carFlag = true
+        //                                 break
+        //                             }
+        //                         }
+        //                     }
+        //                 }
+        //                 that.tempData = JSON.parse(JSON.stringify(that.tableData))
+        //             })
 
-            // 获取本账户购物车数据信息
-            var username = localStorage.getItem('ms_username')
-            axios.post('http://127.0.0.1:3000/getCarList', {
-                username:username
-            }).then(function(response) {
-                    that.$nextTick(() => {
-                        //成功时服务器返回 response 数据
-                        if(response.data.length){
-                            for(var i=0;i<that.tableData.length;i++){
-                                for(var j=0;j<response.data.length;j++){
-                                    if(that.tableData[i].id == response.data[j].id){
-                                        that.tableData[i].carFlag = true
-                                        break
-                                    }
-                                }
-                            }
-                        }
-                        that.tempData = JSON.parse(JSON.stringify(that.tableData))
-                    })
-
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
-        },
+        //         })
+        //         .catch(function(error) {
+        //             console.log(error);
+        //         });
+        // },
         // 删除操作
         handleDel(index, row) {
             var id = row.id
@@ -153,9 +149,12 @@ export default {
                 username:username,
                 id:id,
             }).then(function(response) {
+                    console.log('&&&&&&&&&&&&&&&&&&&')
+                    console.log(response)
+                    // that.getCarData();
                     if(response.status == 200)
                     {
-                        that.getListData();
+                        that.getCarData();
                     }else{
                         that.$message.error('错误')
                         return false
@@ -169,6 +168,7 @@ export default {
         handleAdd(index, row) {
             this.tempRow = row
             this.editVisible = true
+            this.num = row.buynum
         },
         // 保存编辑
         cancel(){
@@ -184,7 +184,7 @@ export default {
             var price = row.price
             var username = localStorage.getItem('ms_username')
             this.editVisible = false;
-            axios.post('http://127.0.0.1:3000/addCar', {
+            axios.post('http://127.0.0.1:3000/updateCar', {
                 username:username,
                 id:id,
                 buynum:num,
@@ -193,7 +193,7 @@ export default {
             }).then(function(response) {
                     if(response.status == 200)
                     {
-                        that.getListData();
+                        that.getCarData();
                     }else{
                         that.$message.error('错误')
                         return false

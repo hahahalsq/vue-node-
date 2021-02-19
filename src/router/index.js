@@ -98,6 +98,13 @@ export default new Router({
                     component: () => import(/* webpackChunkName: "form" */ '../components/page/marketList.vue'),
                     meta: { title: '商品市场' }
                 },
+                {
+                    path: '/myCar',
+                    component: () => import(/* webpackChunkName: "form" */ '../components/page/myCar.vue'),
+                    meta: { title: '购物车' }
+                },
+
+
 
             ]
         },

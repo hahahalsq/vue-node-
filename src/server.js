@@ -191,9 +191,48 @@ app.post('/getCarList',function(req,res){
 app.post('/addCar',function(req,res){
     id = req.body.id
     username = req.body.username
+    goodsname  = req.body.goodsname
+    price = req.body.price
+    buynum = req.body.buynum
     pool.getConnection((err,connection) => {
-        var sql = 'INSERT INTO cars (username,id) VALUES (?,?) '
-        connection.query(sql,[username,id],(err,result) =>{
+        var sql = 'INSERT INTO cars (username,id,goodsname,price,buynum) VALUES (?,?,?,?,?) '
+        connection.query(sql,[username,id,goodsname,price,buynum],(err,result) =>{
+            res.status(200).send(
+                result
+              ) ;
+            connection.release();
+        })
+    })
+});
+
+// 商品操作状态
+app.post('/updateCar',function(req,res){
+    id = req.body.id
+    username = req.body.username
+    goodsname  = req.body.goodsname
+    price = req.body.price
+    buynum = req.body.buynum
+
+    pool.getConnection((err,connection) => {
+        var sql = 'UPDATE cars SET buynum = ? WHERE id = ? AND username = ?'
+        connection.query(sql,[buynum,id,username],(err,result) =>{
+            res.status(200).send(
+                result
+              ) ;
+            connection.release();
+        })
+    })
+});
+
+
+app.post('/delCar',function(req,res){
+    id = req.body.id
+    username = req.body.username
+    pool.getConnection((err,connection) => {
+        var sql = 'DELETE FROM cars WHERE id = ? AND username = ? '
+        connection.query(sql,[id,username],(err,result) =>{
+            console.log(err)
+            console.log(result)
             res.status(200).send(
                 result
               ) ;

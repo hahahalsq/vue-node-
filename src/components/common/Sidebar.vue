@@ -215,8 +215,8 @@ export default {
                 },
                 {
                     icon: 'el-icon-lx-calendar',
-                    index: 'submitform',
-                    title: '基本表单',
+                    index: 'myCar',
+                    title: '购物车',
                 },
             ]      
         }
