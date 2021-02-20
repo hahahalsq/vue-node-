@@ -183,6 +183,7 @@ export default {
             var goodsname = row.goodsname
             var price = row.price
             var username = localStorage.getItem('ms_username')
+            var sellname = row.username
             this.editVisible = false;
             axios.post('http://127.0.0.1:3000/addCar', {
                 username:username,
@@ -190,6 +191,7 @@ export default {
                 buynum:num,
                 goodsname:goodsname,
                 price:price,
+                sellname:sellname
             }).then(function(response) {
                     if(response.status == 200)
                     {

@@ -42,6 +42,7 @@
         <div class="fixBottom">
             <div class="fontA">您应付</div>
             <div class="fontB">{{totalMoney}}元</div>
+            <div class="fontC" @click="confirmBuy()">确认购买</div>
         </div>
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
@@ -221,6 +222,56 @@ export default {
             }
             console.log('******************')
             console.log(this.totalMoney)
+        },
+        confirmBuy(){
+            console.log('*******************')
+            console.log(this.multipleSelection)
+            var username = localStorage.getItem('ms_username')
+            var that = this
+            for(var i=0;i<this.multipleSelection.length;i++){
+                var item = this.multipleSelection[i]
+                var sellname = item.sellname
+                var id = item.id
+                var goodsname = item.goodsname
+                var buynum = item.buynum
+                var price = item.price
+                axios.post('http://127.0.0.1:3000/addDone', {
+                    username:username,
+                    id:id,
+                    buynum:buynum,
+                    goodsname:goodsname,
+                    price:price,
+                    sellname:sellname,
+                }).then(function(response) {
+                        if(response.status == 200)
+                        {
+                            axios.post('http://127.0.0.1:3000/delCar', {
+                                username:username,
+                                id:id,
+                            }).then(function(response) {
+                                    if(response.status == 200)
+                                    {
+                                        that.getCarData();
+                                    }else{
+                                        that.$message.error('错误')
+                                        return false
+                                    }
+                                })
+                                .catch(function(error) {
+                                    console.log(error);
+                                }); 
+
+
+                        }else{
+                            that.$message.error('错误')
+                            return false
+                        }
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            }
+            // that.getCarData();
         },
     }
 };

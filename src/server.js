@@ -194,9 +194,10 @@ app.post('/addCar',function(req,res){
     goodsname  = req.body.goodsname
     price = req.body.price
     buynum = req.body.buynum
+    sellname = req.body.sellname
     pool.getConnection((err,connection) => {
-        var sql = 'INSERT INTO cars (username,id,goodsname,price,buynum) VALUES (?,?,?,?,?) '
-        connection.query(sql,[username,id,goodsname,price,buynum],(err,result) =>{
+        var sql = 'INSERT INTO cars (username,id,goodsname,price,buynum,sellname) VALUES (?,?,?,?,?,?) '
+        connection.query(sql,[username,id,goodsname,price,buynum,sellname],(err,result) =>{
             res.status(200).send(
                 result
               ) ;
@@ -240,6 +241,27 @@ app.post('/delCar',function(req,res){
         })
     })
 });
+
+app.post('/addDone',function(req,res){
+    console.log(req)
+    console.log('*******************')
+    id = req.body.id
+    username = req.body.username
+    goodsname  = req.body.goodsname
+    price = req.body.price
+    buynum = req.body.buynum
+    sellname = req.body.sellname
+    pool.getConnection((err,connection) => {
+        var sql = 'INSERT INTO dones (username,id,goodsname,price,buynum,sellname) VALUES (?,?,?,?,?,?) '
+        connection.query(sql,[username,id,goodsname,price,buynum,sellname],(err,result) =>{
+            res.status(200).send(
+                result
+              ) ;
+            connection.release();
+        })
+    })
+});
+
 
 
 
