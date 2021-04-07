@@ -99,9 +99,9 @@ export default new Router({
                     meta: { title: '商品市场' }
                 },
                 {
-                    path: '/myCar',
+                    path: '/myCollection',
                     component: () => import(/* webpackChunkName: "form" */ '../components/page/myCar.vue'),
-                    meta: { title: '购物车' }
+                    meta: { title: '收藏夹' }
                 },
 
 
