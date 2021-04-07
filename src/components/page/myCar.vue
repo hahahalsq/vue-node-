@@ -17,21 +17,21 @@
                 @selection-change="handleSelectionChange"
             >
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="goodsname" label="商品名" align="center"></el-table-column>
-                <el-table-column prop="price" label="价格" align="center"></el-table-column>
-                <el-table-column prop="buynum" label="数量" align="center"></el-table-column>
+                <el-table-column prop="location" label="位置" align="center"></el-table-column>
+                <el-table-column prop="price" label="租金" align="center"></el-table-column>
+                <el-table-column prop="buynum" label="面积" align="center"></el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
-                        <el-button
+<!--                         <el-button
                             type="text"
                             icon="el-icon-edit"
                             @click="handleAdd(scope.$index, scope.row)"
-                        >修改数量</el-button>
+                        >修改数量</el-button> -->
                         <el-button
                             type="text"
                             icon="el-icon-edit"
                             @click="handleDel(scope.$index, scope.row)"
-                        >移出购物车</el-button>
+                        >取消收藏</el-button>
                     </template>
                 </el-table-column>
 
@@ -39,13 +39,13 @@
         </div>
 
 
-        <div class="fixBottom">
+<!--         <div class="fixBottom">
             <div class="fontA">您应付</div>
             <div class="fontB">{{totalMoney}}元</div>
             <div class="fontC" @click="confirmBuy()">确认购买</div>
-        </div>
+        </div> -->
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
+<!--         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
             <div style="display:flex;align-items:center;justify-content:space-around;">
                 <div>xxx</div>
                 <el-input-number v-model="num" @change="handleChange" :min="1" label=""></el-input-number>
@@ -54,7 +54,7 @@
                 <el-button @click="cancel">取 消</el-button>
                 <el-button type="primary" @click="saveEdit">确 定</el-button>
             </span>
-        </el-dialog>
+        </el-dialog> -->
     </div>
 </template>
 

@@ -16,9 +16,9 @@
                 header-cell-class-name="table-header"
                 @selection-change=""
             >
-                <el-table-column prop="goodsname" label="商品名" align="center"></el-table-column>
-                <el-table-column prop="price" label="价格" align="center"></el-table-column>
-                <el-table-column label="描述">
+                <el-table-column prop="location" label="位置" align="center"></el-table-column>
+                <el-table-column prop="price" label="租金" align="center"></el-table-column>
+                <el-table-column label="详情">
                     <template slot-scope="scope">
                         {{scope.row.content}}
                     </template>
@@ -30,12 +30,12 @@
                             type="text"
                             icon="el-icon-edit"
                             @click="handleAdd(scope.$index, scope.row)" v-show="scope.row.carFlag != true"
-                        >加入购物车</el-button>
+                        >加入收藏</el-button>
                         <el-button
                             type="text"
                             icon="el-icon-edit"
                             @click="handleDel(scope.$index, scope.row)" v-show="scope.row.carFlag == true"
-                        >移出购物车</el-button>
+                        >取消收藏</el-button>
                     </template>
                 </el-table-column>
 
@@ -44,7 +44,7 @@
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
             <div style="display:flex;align-items:center;justify-content:space-around;">
-                <div>xxx</div>
+                <div>确定收藏？</div>
                 <el-input-number v-model="num" @change="handleChange" :min="1" label=""></el-input-number>
             </div>
             <span slot="footer" class="dialog-footer">
@@ -180,7 +180,7 @@ export default {
             var id = row.id
             var num = this.num
             var that = this
-            var goodsname = row.goodsname
+            var location = row.location
             var price = row.price
             var username = localStorage.getItem('ms_username')
             var sellname = row.username
@@ -189,7 +189,7 @@ export default {
                 username:username,
                 id:id,
                 buynum:num,
-                goodsname:goodsname,
+                location:location,
                 price:price,
                 sellname:sellname
             }).then(function(response) {

@@ -11,13 +11,13 @@
         <div class="container">
             <div class="form-box">
                 <el-form ref="form" :model="form" label-width="80px">
-                    <el-form-item label="名称">
+                    <el-form-item label="位置">
                         <el-input v-model="form.name"></el-input>
                     </el-form-item>
-                    <el-form-item label="价格(￥)">
+                    <el-form-item label="租金(￥)">
                         <el-input v-model="form.price"></el-input>
                     </el-form-item>
-                    <el-form-item label="存量(件)">
+                    <el-form-item label="面积(m²)">
                         <el-input v-model="form.number"></el-input>
                     </el-form-item>
 <!--                     <el-form-item label="价格">
@@ -96,7 +96,7 @@ export default {
     methods: {
         onSubmit() {
             const that = this
-            var name = this.form.name
+            var location = this.form.name
             var price = this.form.price
             var number = (this.form.number)
             var desc = this.form.desc
@@ -106,7 +106,7 @@ export default {
             } else {
                 //向服务器提交数据
                 axios.post('http://127.0.0.1:3000/submitgoodsform', {
-                        goodsname: name,
+                        location: location,
                         price:price,
                         amount:number,
                         describe:desc,

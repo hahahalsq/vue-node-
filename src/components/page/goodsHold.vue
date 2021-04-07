@@ -27,9 +27,9 @@
                 @selection-change=""
             >
                 <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
-                <el-table-column prop="goodsname" label="商品名" align="center"></el-table-column>
-                <el-table-column prop="price" label="价格(￥)" align="center"></el-table-column>
-                <el-table-column prop="amount" label="存货量(件)" align="center"></el-table-column>
+                <el-table-column prop="location" label="位置" align="center"></el-table-column>
+                <el-table-column prop="price" label="租金(￥)" align="center"></el-table-column>
+                <el-table-column prop="amount" label="面积(m²)" align="center"></el-table-column>
                 <el-table-column label="详情">
                     <template slot-scope="scope">
                         {{scope.row.content}}
@@ -194,7 +194,7 @@ export default {
         // },
        // 编辑操作
         handleEdit(index, row) {
-            var goodsname = row.goodsname
+            var location = row.location
             var id = row.id
             var stateChange = row.state == 1 ? 0 : 1
             const that = this
