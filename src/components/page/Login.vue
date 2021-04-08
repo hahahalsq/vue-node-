@@ -1,7 +1,7 @@
 <template>
     <div class="login-wrap">
         <div class="ms-login">
-            <div class="ms-title">生鲜销售系统</div>
+            <div class="ms-title">房屋出租管理系统</div>
             <el-form :model="param" :rules="rules" ref="login" label-width="0px" class="ms-content">
                 <el-form-item prop="username">
                     <el-input v-model="param.username" placeholder="username">
@@ -25,7 +25,7 @@
                     <el-button type="primary" @click="registeForm()">注册</el-button>
                 </div>
 
-                <p class="login-tips">Tips : 用户名和密码随便填。</p>
+                <p class="login-tips">Tips : 请输入正确的账号和密码~</p>
             </el-form>
         </div>
     </div>
@@ -75,9 +75,13 @@ export default {
                         if(response.data.length){
                             localStorage.setItem('ms_username', name);
                             localStorage.setItem('ms_level',response.data[0].level);
-                            that.$router.push({
-                              path:'/',
-                            })
+                            if(response.data[0].state == 0){
+                                that.$message.error('账号已下线，请联系管理员！');
+                            }else{
+                                that.$router.push({
+                                  path:'/',
+                                })
+                            }
                         }else{
                             that.$message.error('账号或密码不正确');
                             return false
@@ -93,7 +97,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
 .login-wrap {
     position: relative;
     width: 100%;
@@ -134,5 +138,9 @@ export default {
     font-size: 12px;
     line-height: 30px;
     color: #fff;
+}
+
+.el-input__inner{
+    height:3.4rem !important;
 }
 </style>

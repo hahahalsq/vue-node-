@@ -42,9 +42,9 @@ export default {
             if(parseInt(this.level) === 1){
                 return '超级管理员'
             }else if(parseInt(this.level) === 2){
-                return '商家'
+                return '房屋出租者'
             }else{
-                return '买家'
+                return '租房者'
             }
         }
     },

@@ -3,20 +3,13 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> 基础表格
+                    <i class="el-icon-lx-cascades"></i> 账户列表
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-button
-                    type="primary"
-                    icon="el-icon-delete"
-                    class="handle-del mr10"
-                    @click="delAllSelection"
-                >批量删除</el-button>
-                <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
-                <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+                账户列表如下：
             </div>
             <el-table
                 :data="tableData"
@@ -26,7 +19,6 @@
                 header-cell-class-name="table-header"
                 @selection-change="handleSelectionChange"
             >
-                <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="username" label="用户名" align="center"></el-table-column>
 
                 <el-table-column label="状态" align="center">
@@ -42,9 +34,9 @@
                         <el-tag v-show="scope.row.level == 1"
                         >管理员</el-tag>
                         <el-tag v-show="scope.row.level == 2" type='info'
-                        ></el-tag>
+                        >房屋出租者</el-tag>
                         <el-tag v-show="scope.row.level == 3" type='warning'
-                        ></el-tag>
+                        >租房者</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">

@@ -116,7 +116,7 @@ app.post('/adminChangeState',function(req,res){
 app.post('/getHoldList',function(req,res){
     username=req.body.username;
     pool.getConnection((err,connection) => {
-        var sql = 'SELECT * FROM goodsInfo WHERE username = ? '
+        var sql = 'SELECT * FROM houseInfo WHERE username = ? '
         connection.query(sql,[username],(err,result) =>{
             res.status(200).send(
                 result
@@ -136,7 +136,7 @@ app.post('/submitgoodsform',function(req,res){
     username = req.body.username;
     state = req.body.state;
     pool.getConnection((err,connection) => {
-        var sql = 'INSERT INTO goodsInfo (location,price,amount,state,username,content) VALUES (?,?,?,?,?,?)'
+        var sql = 'INSERT INTO houseInfo (location,price,amount,state,username,content) VALUES (?,?,?,?,?,?)'
         connection.query(sql,[location,price,amount,state,username,content],(err,result) =>{
             res.status(200).send(
                 result
@@ -151,7 +151,7 @@ app.post('/goodsChangeState',function(req,res){
     state = req.body.state
     id = req.body.id
     pool.getConnection((err,connection) => {
-        var sql = 'UPDATE goodsInfo SET state = ? WHERE id = ? '
+        var sql = 'UPDATE houseInfo SET state = ? WHERE id = ? '
         connection.query(sql,[state,id],(err,result) =>{
             res.status(200).send(
                 result
@@ -163,7 +163,7 @@ app.post('/goodsChangeState',function(req,res){
 
 app.post('/getMarketList',function(req,res){
     pool.getConnection((err,connection) => {
-        var sql = 'SELECT * FROM goodsInfo'
+        var sql = 'SELECT * FROM houseInfo'
         connection.query(sql,(err,result) =>{
             res.status(200).send(
                 result
@@ -177,7 +177,7 @@ app.post('/getCarList',function(req,res){
     username = req.body.username
     console.log(username)
     pool.getConnection((err,connection) => {
-        var sql = 'SELECT * FROM cars WHERE username = ?'
+        var sql = 'SELECT * FROM collection WHERE username = ?'
         connection.query(sql,[username],(err,result) =>{
             res.status(200).send(
                 result
@@ -193,11 +193,12 @@ app.post('/addCar',function(req,res){
     username = req.body.username
     location  = req.body.location
     price = req.body.price
-    buynum = req.body.buynum
+    amount = req.body.amount
     sellname = req.body.sellname
+    content = req.body.content
     pool.getConnection((err,connection) => {
-        var sql = 'INSERT INTO cars (username,id,location,price,buynum,sellname) VALUES (?,?,?,?,?,?) '
-        connection.query(sql,[username,id,location,price,buynum,sellname],(err,result) =>{
+        var sql = 'INSERT INTO collection (username,id,location,price,amount,sellname,content) VALUES (?,?,?,?,?,?,?) '
+        connection.query(sql,[username,id,location,price,amount,sellname,content],(err,result) =>{
             res.status(200).send(
                 result
               ) ;
@@ -215,7 +216,7 @@ app.post('/updateCar',function(req,res){
     buynum = req.body.buynum
 
     pool.getConnection((err,connection) => {
-        var sql = 'UPDATE cars SET buynum = ? WHERE id = ? AND username = ?'
+        var sql = 'UPDATE collection SET buynum = ? WHERE id = ? AND username = ?'
         connection.query(sql,[buynum,id,username],(err,result) =>{
             res.status(200).send(
                 result
@@ -230,7 +231,7 @@ app.post('/delCar',function(req,res){
     id = req.body.id
     username = req.body.username
     pool.getConnection((err,connection) => {
-        var sql = 'DELETE FROM cars WHERE id = ? AND username = ? '
+        var sql = 'DELETE FROM collection WHERE id = ? AND username = ? '
         connection.query(sql,[id,username],(err,result) =>{
             console.log(err)
             console.log(result)

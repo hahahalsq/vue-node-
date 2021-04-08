@@ -3,7 +3,7 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> 
+                    <i class="el-icon-lx-cascades">房屋市场</i> 
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
@@ -17,7 +17,8 @@
                 @selection-change=""
             >
                 <el-table-column prop="location" label="位置" align="center"></el-table-column>
-                <el-table-column prop="price" label="租金" align="center"></el-table-column>
+                <el-table-column prop="price" label="租金(￥)" align="center"></el-table-column>
+                <el-table-column prop="amount" label="面积(m²)" align="center"></el-table-column>
                 <el-table-column label="详情">
                     <template slot-scope="scope">
                         {{scope.row.content}}
@@ -44,8 +45,7 @@
         <!-- 编辑弹出框 -->
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
             <div style="display:flex;align-items:center;justify-content:space-around;">
-                <div>确定收藏？</div>
-                <el-input-number v-model="num" @change="handleChange" :min="1" label=""></el-input-number>
+                <div style="font-size:2rem;color:#E56151;">确定收藏？</div>
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="cancel">取 消</el-button>
@@ -95,6 +95,7 @@ export default {
     },
     methods: {
         getListData() {
+            console.log('111111')
             //向服务器提交数据
             const that = this
             that.username = localStorage.getItem('ms_username')
@@ -103,7 +104,12 @@ export default {
             }).then(function(response) {
                     //成功时服务器返回 response 数据
                     if(response.data.length){
-                        that.tableData = response.data
+                        that.tableData = []
+                        for(var j=0;j<response.data.length;j++){
+                            if(response.data[j].state == 1){
+                                that.tableData.push(response.data[j])
+                            }
+                        }
                         that.getCarInfo()
 
                     }else{
@@ -178,20 +184,22 @@ export default {
         saveEdit() {
             var row = this.tempRow
             var id = row.id
-            var num = this.num
             var that = this
             var location = row.location
             var price = row.price
+            var amount = row.amount
             var username = localStorage.getItem('ms_username')
             var sellname = row.username
+            var content = row.content
             this.editVisible = false;
             axios.post('http://127.0.0.1:3000/addCar', {
                 username:username,
                 id:id,
-                buynum:num,
+                amount:amount,
                 location:location,
                 price:price,
-                sellname:sellname
+                sellname:sellname,
+                content:content,
             }).then(function(response) {
                     if(response.status == 200)
                     {
