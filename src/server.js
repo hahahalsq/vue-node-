@@ -2,6 +2,7 @@ var express             = require('express');
 var app                 = express();
 var bodyParse           = require('body-parser')
 const mysql             = require('mysql')
+const multer            = require('multer')
 
 const mysqlConfig = {
     host:'localhost',
@@ -33,6 +34,35 @@ app.all('*', function (req, res, next){
 //使用bodyParse解释前端提交数据
 app.use(bodyParse.urlencoded({extended:true})) ;
 app.use(bodyParse.json());
+
+
+ //上传的文件保存在 upload
+ const storage = multer.diskStorage({
+     //存储的位置
+     destination(req, file, cb){
+         cb(null, 'upload/')
+     },
+     //文件名字的确定 multer默认帮我们取一个没有扩展名的文件名，因此需要我们自己定义
+     filename(req, file, cb){
+        // 以时间戳为文件名
+        cb(null, Date.now() +'.png')
+     }
+ })
+
+
+
+// const upload = multer({dest:__dirname+'/upload'})
+const upload = multer({storage})
+app.post('/uploadImg',upload.single('file'), async (req, res) => {
+    const file = req.file
+    tempname = file.filename
+    // console.log(tempname)
+    // 这里是拼接返回给前端的路径，现在所获取到的filename是没有文件格式的，但是在本地的项目时，是可以展示的。
+    // 如果作为线上项目，你要配置public文件夹
+    // 代码-线上接口，展示的是以5000端口返回的图片地址有图片格式的返回
+    file.url = `http://localhost:8080/upload/${tempname}`
+    res.json(file)
+})
 
 // 处理根目录的get请求
 app.get('/',function(req,res){

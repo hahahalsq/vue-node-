@@ -56,11 +56,13 @@ export default new Router({
             component: () => import(/* webpackChunkName: "login" */ '../components/page/Login.vue'),
             meta: { title: '登录' }
         },
+
         {
             path: '/register',
-            component: () => import(/* webpackChunkName: "login" */ '../components/page/Register.vue'),
+            component: () => import(/* webpackChunkName: "login" */ '../components/page/upload.vue'),
             meta: { title: '注册' }
         },
+
         {
             path: '/address',
             component: () => import(/* webpackChunkName: "login" */ '../components/page/BaseForm.vue'),
