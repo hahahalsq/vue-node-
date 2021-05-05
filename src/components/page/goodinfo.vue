@@ -20,17 +20,6 @@
                     <el-form-item label="面积(m²)">
                         <el-input v-model="form.number"></el-input>
                     </el-form-item>
-
-                    <el-form-item label="房型">
-                        <el-radio-group v-model="form.type">
-                            <el-radio label="aaa">一室一厅</el-radio>
-                            <el-radio label="bbb">两室一厅</el-radio>
-                            <el-radio label="ccc">三室一厅</el-radio>
-                            <el-radio label="ddd">三室两厅</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-
-
                     <el-form-item label="详情">
                         <el-input type="textarea" rows="5" v-model="form.desc"></el-input>
                     </el-form-item>
@@ -45,7 +34,7 @@
                       :on-progress="sendIng"
                       :on-error="sendErr"
                       :on-success="sendSuccess"
-                       style="width:140%;padding-left:70px;margin-bottom:40px;" ref="upload">
+                       style="width:140%;padding-left:70px;margin-bottom:40px;">
                       <i class="el-icon-plus"></i>
                     </el-upload>
                     <el-dialog :visible.sync="dialogVisible" size="tiny">
@@ -74,7 +63,6 @@ export default {
                 price:'',
                 number:'',
                 desc:'',
-                type:'',
             },
             dialogImageUrl: '', // 接口返回的图片地址
             returnImgUrl: [], // 用来存放图片地址
@@ -91,7 +79,6 @@ export default {
             var number = (this.form.number)
             var desc = this.form.desc
             var username = localStorage.getItem('ms_username')
-            var type = this.form.type
 
             console.log('>>>>>>>>>')
             console.log(this.returnImgUrl)
@@ -122,8 +109,6 @@ export default {
                     this.$message.error('请将数据补充完整！');
                 } else {
 
-                    that.$refs.upload.clearFiles();
-
                     //向服务器提交数据
                     axios.post('http://127.0.0.1:3000/submitgoodsform', {
                             location: location,
@@ -133,7 +118,6 @@ export default {
                             username:username,
                             state:1,
                             imgs:imgs,
-                            type:type,
                         })
                         .then(function(response) {
                             //成功时服务器返回 response 数据
@@ -146,7 +130,6 @@ export default {
                                 that.form.price = ''
                                 that.form.number = ''
                                 that.form.desc = ''
-                                that.form.type = ''
 
                             }
                         })

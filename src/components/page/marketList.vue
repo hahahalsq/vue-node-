@@ -16,9 +16,33 @@
                 header-cell-class-name="table-header"
                 @selection-change=""
             >
+
+                <el-table-column width="280" label="房屋图片" align="center">
+                    <template slot-scope="scope">
+                        <div style="text-align:center;">
+                        <img @click="showMoreImg(scope.row)" :src="require('../../assets/upload/'+scope.row.firstImg)" style="width:200px;height:180px;" />
+                        </div>
+                    </template>
+                </el-table-column>
+
                 <el-table-column prop="location" label="位置" align="center"></el-table-column>
-                <el-table-column prop="price" label="租金(￥)" align="center"></el-table-column>
-                <el-table-column prop="amount" label="面积(m²)" align="center"></el-table-column>
+                <el-table-column prop="price" label="租金(￥)" align="center" sortable></el-table-column>
+                <el-table-column prop="amount" label="面积(m²)" align="center" sortable></el-table-column>
+
+                <el-table-column label="房型" align="center">
+                    <template slot-scope="scope">
+                        <div v-show="scope.row.type == 'aaa'"
+                        >一室一厅</div>
+                        <div v-show="scope.row.type == 'bbb'"
+                        >两室一厅</div>
+                        <div v-show="scope.row.type == 'ccc'"
+                        >三室一厅</div>
+                        <div v-show="scope.row.type == 'ddd'"
+                        >三室两厅</div>
+                    </template>
+                </el-table-column>
+
+
                 <el-table-column label="详情">
                     <template slot-scope="scope">
                         {{scope.row.content}}
@@ -52,6 +76,20 @@
                 <el-button type="primary" @click="saveEdit">确 定</el-button>
             </span>
         </el-dialog>
+
+        <!-- 图片弹出框 -->
+        <el-dialog title="房屋图片" :visible.sync="imgVisible" width="50%" style="text-align:center;">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <div v-for="item in returnImgUrlAll">
+                <img :src="require('../../assets/upload/'+item)" style="width:20rem;height:20rem;margin:20px;" />
+              </div>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="confirmImg">确 定</el-button>
+            </span>
+        </el-dialog>
+
+
     </div>
 </template>
 
@@ -73,6 +111,7 @@ export default {
             multipleSelection: [],
             delList: [],
             editVisible: false,
+            imgVisible:false,
             pageTotal: 0,
             form: {},
             idx: -1,
@@ -80,6 +119,7 @@ export default {
             username:'',
             tempRow:null,
             num:0,
+            returnImgUrlAll:[],
         };
     },
     created() {
@@ -94,6 +134,21 @@ export default {
       "$route": "getListData"
     },
     methods: {
+        showMoreImg(item){
+            this.imgVisible = true
+            var tempList = []
+            var tempArr = item.imgs.split('+')
+            for(var i=1;i<tempArr.length;i++){
+                tempList.push(tempArr[i])
+            }
+
+            this.returnImgUrlAll = tempList
+            console.log(this.returnImgUrlAll)
+        },
+        confirmImg(){
+            this.imgVisible = false
+            this.returnImgUrlAll = []
+        },
         getListData() {
             console.log('111111')
             //向服务器提交数据
@@ -143,6 +198,15 @@ export default {
                             }
                         }
                         that.tempData = JSON.parse(JSON.stringify(that.tableData))
+                        console.log('?????????????')
+                        console.log(that.tempData)
+
+                        for(var i=0;i<that.tempData.length;i++){
+                            var temparr = that.tempData[i].imgs
+                            var firstImg = temparr.split('+')[1]
+                            that.tempData[i].firstImg = firstImg
+                        }
+
                     })
 
                 })
@@ -191,6 +255,8 @@ export default {
             var username = localStorage.getItem('ms_username')
             var sellname = row.username
             var content = row.content
+            var imgs = row.imgs
+            var type = row.type
             this.editVisible = false;
             axios.post('http://127.0.0.1:3000/addCar', {
                 username:username,
@@ -200,6 +266,8 @@ export default {
                 price:price,
                 sellname:sellname,
                 content:content,
+                imgs:imgs,
+                type:type,
             }).then(function(response) {
                     if(response.status == 200)
                     {
@@ -221,6 +289,7 @@ export default {
 </script>
 
 <style scoped>
+
 .handle-box {
     margin-bottom: 20px;
 }

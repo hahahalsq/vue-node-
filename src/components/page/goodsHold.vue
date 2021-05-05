@@ -16,10 +16,29 @@
                 header-cell-class-name="table-header"
                 @selection-change=""
             >
+                <el-table-column width="280" label="图片" align="center">
+                    <template slot-scope="scope">
+                        <div style="text-align:center;">
+                        <img :src="require('../../assets/upload/'+scope.row.firstImg)" style="width:200px;height:180px;" />
+                        </div>
+                    </template>
+                </el-table-column>
                 <!-- <el-table-column type="selection" width="55" align="center"></el-table-column> -->
                 <el-table-column prop="location" label="位置" align="center"></el-table-column>
-                <el-table-column prop="price" label="租金(￥)" align="center"></el-table-column>
-                <el-table-column prop="amount" label="面积(m²)" align="center"></el-table-column>
+                <el-table-column prop="price" label="租金(￥)" align="center" sortable></el-table-column>
+                <el-table-column prop="amount" label="面积(m²)" align="center" sortable></el-table-column>
+                <el-table-column label="房型" align="center">
+                    <template slot-scope="scope">
+                        <div v-show="scope.row.type == 'aaa'"
+                        >一室一厅</div>
+                        <div v-show="scope.row.type == 'bbb'"
+                        >两室一厅</div>
+                        <div v-show="scope.row.type == 'ccc'"
+                        >三室一厅</div>
+                        <div v-show="scope.row.type == 'ddd'"
+                        >三室两厅</div>
+                    </template>
+                </el-table-column>
                 <el-table-column label="详情">
                     <template slot-scope="scope">
                         {{scope.row.content}}
@@ -68,6 +87,10 @@
                 <el-button type="primary" @click="saveEdit">确 定</el-button>
             </span>
         </el-dialog> -->
+
+
+
+
     </div>
 </template>
 
@@ -93,6 +116,8 @@ export default {
             idx: -1,
             id: -1,
             username:'',
+
+            returnImgUrlAll:[], // 整合全部路径
 
         };
     },
@@ -138,10 +163,14 @@ export default {
                 username:name
             }).then(function(response) {
                     //成功时服务器返回 response 数据
-                    // console.log('~~~~~~~~~~~')
-                    // console.log(response)
                     if(response.data.length){
                         that.tableData = response.data
+                        for(var i=0;i<that.tableData.length;i++){
+                            var temparr = that.tableData[i].imgs
+                            var firstImg = temparr.split('+')[1]
+                            that.tableData[i].firstImg = firstImg
+                        }
+                        console.log(that.tableData)
                     }else{
                         that.$message.error('没有数据')
                         return false

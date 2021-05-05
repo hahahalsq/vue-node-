@@ -157,6 +157,7 @@ app.post('/getHoldList',function(req,res){
 
 // 商户提交商品信息接口
 app.post('/submitgoodsform',function(req,res){
+    console.log(req.body)
 
     location = req.body.location;
     price = req.body.price;
@@ -164,9 +165,11 @@ app.post('/submitgoodsform',function(req,res){
     content = req.body.describe;
     username = req.body.username;
     state = req.body.state;
+    imgs = req.body.imgs;
+    type = req.body.type;
     pool.getConnection((err,connection) => {
-        var sql = 'INSERT INTO houseInfo (location,price,amount,state,username,content) VALUES (?,?,?,?,?,?)'
-        connection.query(sql,[location,price,amount,state,username,content],(err,result) =>{
+        var sql = 'INSERT INTO houseInfo (location,price,amount,state,username,content,imgs,type) VALUES (?,?,?,?,?,?,?,?)'
+        connection.query(sql,[location,price,amount,state,username,content,imgs,type],(err,result) =>{
             res.status(200).send(
                 result
               ) ;
@@ -225,9 +228,11 @@ app.post('/addCar',function(req,res){
     amount = req.body.amount
     sellname = req.body.sellname
     content = req.body.content
+    imgs = req.body.imgs
+    type = req.body.type
     pool.getConnection((err,connection) => {
-        var sql = 'INSERT INTO collection (username,id,location,price,amount,sellname,content) VALUES (?,?,?,?,?,?,?) '
-        connection.query(sql,[username,id,location,price,amount,sellname,content],(err,result) =>{
+        var sql = 'INSERT INTO collection (username,id,location,price,amount,sellname,content,imgs,type) VALUES (?,?,?,?,?,?,?,?,?) '
+        connection.query(sql,[username,id,location,price,amount,sellname,content,imgs,type],(err,result) =>{
             res.status(200).send(
                 result
               ) ;

@@ -59,9 +59,15 @@ export default new Router({
 
         {
             path: '/register',
-            component: () => import(/* webpackChunkName: "login" */ '../components/page/upload.vue'),
+            component: () => import(/* webpackChunkName: "login" */ '../components/page/Register.vue'),
             meta: { title: '注册' }
         },
+        {
+            path: '/upload',
+            component: () => import(/* webpackChunkName: "login" */ '../components/page/upload.vue'),
+            meta: { title: '上传' }
+        },
+
 
         {
             path: '/address',

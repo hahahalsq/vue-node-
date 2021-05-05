@@ -16,9 +16,32 @@
                 header-cell-class-name="table-header"
                 @selection-change="handleSelectionChange"
             >
+
+                <el-table-column width="280" label="房屋图片" align="center">
+                    <template slot-scope="scope">
+                        <div style="text-align:center;">
+                        <img @click="showMoreImg(scope.row)" :src="require('../../assets/upload/'+scope.row.firstImg)" style="width:200px;height:180px;" />
+                        </div>
+                    </template>
+                </el-table-column>
+
                 <el-table-column prop="location" label="位置" align="center"></el-table-column>
-                <el-table-column prop="price" label="租金(￥)" align="center"></el-table-column>
-                <el-table-column prop="amount" label="面积(m²)" align="center"></el-table-column>
+                <el-table-column prop="price" label="租金(￥)" align="center" sortable></el-table-column>
+                <el-table-column prop="amount" label="面积(m²)" align="center" sortable></el-table-column>
+
+                <el-table-column label="房型" align="center">
+                    <template slot-scope="scope">
+                        <div v-show="scope.row.type == 'aaa'"
+                        >一室一厅</div>
+                        <div v-show="scope.row.type == 'bbb'"
+                        >两室一厅</div>
+                        <div v-show="scope.row.type == 'ccc'"
+                        >三室一厅</div>
+                        <div v-show="scope.row.type == 'ddd'"
+                        >三室两厅</div>
+                    </template>
+                </el-table-column>
+
                 <el-table-column label="详情" align="center">
                     <template slot-scope="scope">
                         {{scope.row.content}}
@@ -37,6 +60,19 @@
             </el-table>
         </div>
 
+        <!-- 图片弹出框 -->
+        <el-dialog title="房屋图片" :visible.sync="imgVisible" width="50%" style="text-align:center;">
+            <div style="display:flex;align-items:center;flex-wrap:wrap;">
+              <div v-for="item in returnImgUrlAll">
+                <img :src="require('../../assets/upload/'+item)" style="width:20rem;height:20rem;margin:20px;" />
+              </div>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="confirmImg">确 定</el-button>
+            </span>
+        </el-dialog>
+
+
     </div>
 </template>
 
@@ -52,6 +88,8 @@ export default {
             multipleSelection: [],
             delList: [],
             editVisible: false,
+            imgVisible:false,
+
             pageTotal: 0,
             form: {},
             idx: -1,
@@ -60,6 +98,7 @@ export default {
             tempRow:null,
             num:0,
             totalMoney:0,
+            returnImgUrlAll:[],
         };
     },
     created() {
@@ -74,6 +113,21 @@ export default {
       "$route": "getCarData"
     },
     methods: {
+        showMoreImg(item){
+            this.imgVisible = true
+            var tempList = []
+            var tempArr = item.imgs.split('+')
+            for(var i=1;i<tempArr.length;i++){
+                tempList.push(tempArr[i])
+            }
+
+            this.returnImgUrlAll = tempList
+            console.log(this.returnImgUrlAll)
+        },
+        confirmImg(){
+            this.imgVisible = false
+            this.returnImgUrlAll = []
+        },
         getCarData() {
             console.log('22222')
             //向服务器提交数据
@@ -87,6 +141,18 @@ export default {
                     if(response.data.length){
                         that.tableData = response.data
                         // that.getCarInfo()
+                        console.log(';;;;;;;;;;;;;;;;;;;')
+                        console.log(that.tableData)
+
+
+
+                        for(var i=0;i<that.tableData.length;i++){
+                            var temparr = that.tableData[i].imgs
+                            var firstImg = temparr.split('+')[1]
+                            that.tableData[i].firstImg = firstImg
+                        }
+
+
 
                     }else{
                         that.tableData = []
