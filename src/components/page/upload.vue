@@ -1,6 +1,8 @@
 <template>
     <div>
-        <div>文件列表</div>
+      <!-- <img src="../../assets/img/img.jpg" class="user-avator" alt /> -->
+       <!-- <img src="../../assets/img/img.jpg" /> -->
+        <div>列表</div>
         <el-upload
           action="http://localhost:3000/uploadImg"
           list-type="picture-card"
@@ -19,8 +21,17 @@
 
 
         <el-button @click="showImgUrl()">点击查询</el-button>
+        <el-button @click="showImg()">点击显示</el-button>
+        <div style="display:flex;align-items:center;"> 
+          <div v-for="item in returnImgUrlAll">
+            <img :src="require('../../assets/upload/'+item)" style="width:15rem;height:15rem;" />
+          </div>
+        </div>
 
-        <!-- <img src="../../upload/b1cd629bf246af0fe5660a1997f45270.png" />  -->
+        <!-- <img :src="require('../../assets/upload/1619750149224.png')" /> -->
+
+        <!-- <img src="../../upload/1619747584507.png" />  -->
+        <!-- <img src="../../assets/img/img.jpg" class="user-avator" alt /> -->
 
 <!-- 
         <div @click=""></div> -->
@@ -40,10 +51,38 @@ export default {
             },
             dialogImageUrl: '', // 接口返回的图片地址
             returnImgUrl: [], // 用来存放图片地址
+            returnImgUrlAll:[], // 整合全部路径
             dialogVisible: false
         };
     },
+    computed:{
+        // returnImgUrlAll(){
+        //   var tempList = []
+        //   for(var i=0;i<this.returnImgUrl.length;i++){
+        //     var tempitem = "../../upload" + this.returnImgUrl[i]
+        //     tempList.push(tempitem) 
+        //   }
+        //   return tempList
+        // }
+    },
     methods: {
+      showImg(){
+        var tempList = []
+        for(var i=0;i<this.returnImgUrl.length;i++){
+          // 1619750417212.png
+          var tempitem = this.returnImgUrl[i]
+          // var tempitem = require("../../assets/upload/" + this.returnImgUrl[i])
+          var requUrl = (tempitem)
+          tempList.push(tempitem) 
+        }
+        this.returnImgUrlAll = tempList
+        console.log('??????')
+        console.log(this.returnImgUrlAll)
+        // 1619750149224
+        // this.testa = require('../../assets/upload/1619750149224.png')
+        // console.log(this.testa)
+
+      },
       showImgUrl(){
         console.log('^^^^^^^^^^^^^^^')
         console.log(this.returnImgUrl)

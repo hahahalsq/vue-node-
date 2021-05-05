@@ -40,7 +40,7 @@ app.use(bodyParse.json());
  const storage = multer.diskStorage({
      //存储的位置
      destination(req, file, cb){
-         cb(null, 'upload/')
+         cb(null, 'assets/upload/')
      },
      //文件名字的确定 multer默认帮我们取一个没有扩展名的文件名，因此需要我们自己定义
      filename(req, file, cb){
@@ -48,7 +48,6 @@ app.use(bodyParse.json());
         cb(null, Date.now() +'.png')
      }
  })
-
 
 
 // const upload = multer({dest:__dirname+'/upload'})
@@ -60,7 +59,7 @@ app.post('/uploadImg',upload.single('file'), async (req, res) => {
     // 这里是拼接返回给前端的路径，现在所获取到的filename是没有文件格式的，但是在本地的项目时，是可以展示的。
     // 如果作为线上项目，你要配置public文件夹
     // 代码-线上接口，展示的是以5000端口返回的图片地址有图片格式的返回
-    file.url = `http://localhost:8080/upload/${tempname}`
+    file.url = `http://localhost:8080/assets/upload/${tempname}`
     res.json(file)
 })
 
