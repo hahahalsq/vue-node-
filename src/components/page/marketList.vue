@@ -8,6 +8,18 @@
             </el-breadcrumb>
         </div>
         <div class="container">
+
+
+            <div style="margin-bottom:30px;display:flex;align-items:center;">
+                <div style="color:#999999;margin-right:30px;font-size:14px;">房型快速筛选</div>
+                <el-button type="success" plain @click="typeSort('aaa')">一室一厅</el-button>
+                <el-button type="success" plain @click="typeSort('bbb')">两室一厅</el-button>
+                <el-button type="success" plain @click="typeSort('ccc')">三室一厅</el-button>
+                <el-button type="success" plain @click="typeSort('ddd')">三室两厅</el-button>
+                <el-button type="success" plain @click="typeSort('all')">全部</el-button>
+            </div>
+
+
             <el-table
                 :data="tempData"
                 border
@@ -134,6 +146,37 @@ export default {
       "$route": "getListData"
     },
     methods: {
+        typeSort(flag){
+            if(flag == 'all'){
+                this.getListData()
+            }else{
+
+                //向服务器提交数据
+                const that = this
+                axios.post('http://127.0.0.1:3000/getMarketListType', {
+                    type:flag
+                }).then(function(response) {
+                        //成功时服务器返回 response 数据
+                        if(response.data.length){
+                            that.tableData = []
+                            for(var j=0;j<response.data.length;j++){
+                                if(response.data[j].state == 1){
+                                    that.tableData.push(response.data[j])
+                                }
+                            }
+                            that.getCarInfo()
+
+                        }else{
+                            that.$message.error('没有数据')
+                            that.tempData = []
+                            return false
+                        }
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            }
+        },
         showMoreImg(item){
             this.imgVisible = true
             var tempList = []

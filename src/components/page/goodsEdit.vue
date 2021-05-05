@@ -148,6 +148,12 @@ export default {
                                 that.form.desc = ''
                                 that.form.type = ''
 
+
+                                that.dialogImageUrl =  ''
+                                that.returnImgUrl = []
+                                that.returnImgUrlAll = []
+                                
+
                             }
                         })
                         .catch(function(error) {

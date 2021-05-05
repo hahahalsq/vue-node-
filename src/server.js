@@ -205,6 +205,23 @@ app.post('/getMarketList',function(req,res){
     })
 });
 
+app.post('/getMarketListType',function(req,res){
+
+    type=req.body.type;
+    pool.getConnection((err,connection) => {
+        var sql = 'SELECT * FROM houseInfo WHERE type = ? '
+        connection.query(sql,[type],(err,result) =>{
+            res.status(200).send(
+                result
+              ) ;
+            connection.release();
+        })
+    })
+
+});
+
+
+
 app.post('/getCarList',function(req,res){
     username = req.body.username
     console.log(username)
