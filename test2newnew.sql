@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80021
 File Encoding         : 65001
 
-Date: 2021-04-09 00:47:59
+Date: 2021-05-09 00:16:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,14 +26,10 @@ CREATE TABLE `collection` (
   `price` float(10,2) DEFAULT NULL,
   `amount` float(10,0) DEFAULT NULL,
   `sellname` varchar(255) DEFAULT NULL,
-  `content` varchar(255) DEFAULT NULL
+  `content` varchar(255) DEFAULT NULL,
+  `imgs` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of collection
--- ----------------------------
-INSERT INTO `collection` VALUES ('ccc', '11', '北京市海淀区幸福大街1栋', '40000.00', '78', 'aaa', '请联系我xxxx');
-INSERT INTO `collection` VALUES ('ccc', '12', '山西省大同市长安路1栋', '3123.00', '1223', 'aaa', '发送到发送到发发生');
 
 -- ----------------------------
 -- Table structure for dones
@@ -49,10 +45,6 @@ CREATE TABLE `dones` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of dones
--- ----------------------------
-
--- ----------------------------
 -- Table structure for houseinfo
 -- ----------------------------
 DROP TABLE IF EXISTS `houseinfo`;
@@ -64,17 +56,10 @@ CREATE TABLE `houseinfo` (
   `username` varchar(255) DEFAULT NULL,
   `content` varchar(255) DEFAULT NULL,
   `id` int NOT NULL AUTO_INCREMENT,
+  `imgs` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of houseinfo
--- ----------------------------
-INSERT INTO `houseinfo` VALUES ('1111', '11.00', '111111', '0', 'aaa', '1111', '8');
-INSERT INTO `houseinfo` VALUES ('222', '2222.00', '22222', '0', 'aaa', '222', '9');
-INSERT INTO `houseinfo` VALUES ('33', '3333.00', '33', '0', 'aaa', '33333', '10');
-INSERT INTO `houseinfo` VALUES ('北京市海淀区幸福大街1栋', '40000.00', '78', '1', 'aaa', '请联系我xxxx', '11');
-INSERT INTO `houseinfo` VALUES ('山西省大同市长安路1栋', '3123.00', '1223', '1', 'aaa', '发送到发送到发发生', '12');
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for user
@@ -86,11 +71,3 @@ CREATE TABLE `user` (
   `state` int DEFAULT NULL,
   `level` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of user
--- ----------------------------
-INSERT INTO `user` VALUES ('admin', 'admin', '1', '1');
-INSERT INTO `user` VALUES ('bbb', 'bbb', '1', '3');
-INSERT INTO `user` VALUES ('ccc', 'ccc', '1', '3');
-INSERT INTO `user` VALUES ('aaa', 'aaa', '1', '2');
